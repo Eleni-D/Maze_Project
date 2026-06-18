@@ -2,24 +2,15 @@ import tkinter as tk
 import random
 import time
 
-# ==========================================
-# 1. MAZE CONFIGURATION CONSTANTS
-# ==========================================
 ROWS = 15          
 COLS = 20          
 CELL_SIZE = 30     
 OFFSET = 40        
 
-# ==========================================
-# 2. MAZE MEMORY LAYOUT ARRAYS
-# ==========================================
 northWall = [[1 for _ in range(COLS + 1)] for _ in range(ROWS + 1)]
 eastWall = [[1 for _ in range(COLS + 1)] for _ in range(ROWS + 1)]
 visited = [[0 for _ in range(COLS + 1)] for _ in range(ROWS + 1)]
 
-# ==========================================
-# 3. TKINTER GRAPHICS WINDOW SETUP
-# ==========================================
 root = tk.Tk()
 root.title("Dynamic Maze Generator and Solver")
 
@@ -57,9 +48,6 @@ def draw_maze():
 
     root.update()
 
-# ==========================================
-# 4. GENERATION MOUSE (STACK-BASED DFS)
-# ==========================================
 def generate_maze(start_r, start_c):
     """Generates a proper maze with loop injections using a stack."""
     stack = []
@@ -116,9 +104,6 @@ def generate_maze(start_r, start_c):
     
     root.after(500, solve_maze)
 
-# ==========================================
-# 5. MAZE SOLVER (BACKTRACKING VISUALIZATION)
-# ==========================================
 def solve_maze():
     """Finds the solution path using a red locator and blue dead-end dots."""
     start_row = ROWS // 2
@@ -175,9 +160,6 @@ def solve_maze():
             stack.pop()
             root.update()
 
-# ==========================================
-# 6. ENGINE BOOTSTRAP
-# ==========================================
 draw_maze()
 root.after(1000, lambda: generate_maze(ROWS, 1)) 
 root.mainloop()
