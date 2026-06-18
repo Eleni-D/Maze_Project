@@ -1,0 +1,43 @@
+# Visual Maze Generator and Solver
+
+A dynamic, desktop-based GUI application built in Python using **Tkinter** that programmatically constructs a maze and automatically solves it in real-time. This project highlights the implementation of graph structures, matrix arrays, and stack-based Depth-First Search (DFS) with backtracking.
+
+---
+
+## Data Structure & Design Mechanics
+
+The maze is modeled as a rigorous structural grid adhering directly to the following custom memory specifications:
+
+* **Wall Matrices (`northWall[R][C]` & `eastWall[R][C]`):** 2D tracking arrays where an integer value of `1` represents an intact, impassable boundary line, and `0` represents a broken ("eaten") open walkway.
+* **The Bottom Edge (Phantom Row):** To neatly manage the absolute bottom border without handling edge-case bounds exceptions, Row `0` acts as a *phantom row* whose north walls define the bottom edge of the visible maze (`northWall[r-1][c]`).
+* **The Left Edge:** Handled cleanly by parsing values along column zero (`eastWall[r][0]`) to establish the bounding west perimeter and the entry point gap.
+* **Backtracking Stack:** An explicit, array-backed Stack layout is used by both the creation mouse and the solving mouse to handle trajectory history and unwind routing choices when hitting dead ends.
+
+---
+
+## Architectural Execution
+
+### 1. Generation Mouse (DFS Algorithm)
+The generator starts at a specific coordinate with a grid full of intact walls. It iteratively scans for unvisited neighbor cells (North, East, South, West). 
+* **If neighbors are available:** It randomly picks a direction, breaks the separating boundary matrix wall down to `0`, pushes the current coordinate onto the tracking stack, and steps forward.
+* **If cornered in a dead end:** It pops the stack to trace backward until it exposes a cell with remaining unvisited options.
+
+### 2. Solver Mouse (Backtracking Visualization)
+Once generation completes, the solver triggers automatically. It sets a tracking dot at the entrance gap and works its way toward the exit corridor via existing `0` paths.
+* **Active Progress Path:** Rendered dynamically as a moving **Red Dot** indicator tracking forward.
+* **Dead-End Deadlocks:** When trapped by surrounding wall boundaries or previously traversed routes, the node is permanently colored **Blue** as the stack pops to retrace options.
+
+---
+
+## The Challenge Bonus Added
+
+To test pathfinding robustly, this engine implements the **Graph Cycle Injection Challenge** outlined in the project addendum. 
+
+During the initial generation pass, there is a **1 in 20 (5%) chance** that the mouse will purposefully break an extra wall adjacent to its track. This forces the underlying graph tree structure to break the "shoulder-to-the-wall" rules by actively injecting cyclical loops, providing an authentic test for the automated solver.
+
+---
+
+### Running the Application
+Open a terminal prompt inside the project folder directory and run:
+```bash
+python maze.py
